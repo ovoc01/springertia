@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
 @Aspect
 public class InertiaRendererAspect {
     Logger logger = org.slf4j.LoggerFactory.getLogger(InertiaRendererAspect.class);
-    @Pointcut("@annotation(com.noar.inert.js.annotation.InertiaRender)")
+    @Pointcut("@annotatio(com.noar.inert.js.annotation.InertiaRender)")
     public void renderInertiaView() {
     }
 

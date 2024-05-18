@@ -14,6 +14,19 @@ Springertia is a lightweight library that makes integrating the powerful Inertia
 ## Key Features
 
 * **`@InertiaRender` Annotation:**  Decorate your Spring Boot controllers with the `@InertiaRender(view="YourViewName")` annotation to automatically handle Inertia.js page rendering and data transfer.
+
+
+```java
+@Controller
+public class InertiaDemoController {
+    
+    @GetMapping("/")
+    @InertiaRender(view = "Home")
+    public ModelAndView index() {
+        return null;//Return null if no props is needed to be passed in the view
+    }
+}
+```
 * **Data Sharing:**  Pass data to your Inertia.js components using a simple `Map` or `Object` structure.
 
-## Getting Started
+
