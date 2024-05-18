@@ -7,8 +7,11 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.noar.inert.js.annotation.InertiaRender;
+import com.noar.inert.js.core.response.InertiaResponse;
 
 import java.lang.reflect.Method;
 
@@ -16,7 +19,7 @@ import java.lang.reflect.Method;
 @Aspect
 public class InertiaRendererAspect {
     Logger logger = org.slf4j.LoggerFactory.getLogger(InertiaRendererAspect.class);
-    @Pointcut("@annotatio(com.noar.inert.js.annotation.InertiaRender)")
+    @Pointcut("@annotation(com.noar.inert.js.annotation.InertiaRender)")
     public void renderInertiaView() {
     }
 
@@ -34,7 +37,16 @@ public class InertiaRendererAspect {
             return Inertia.render(inertiaRender.view());
         }else{
             
-            return Inertia.render(inertiaRender.view(), Inertia.Props.with(props));
+            ModelAndView modelAndView = props instanceof ModelAndView ? (ModelAndView) props : null;
+           
+            if(modelAndView != null){
+                InertiaResponse inertiaResponse = new InertiaResponse(modelAndView.getModel());
+                Object viewProps = Inertia.Props.with(inertiaResponse.getValues());
+                logger.info("InertiaRender with {} method returned props: {}",inertiaRender.view(),viewProps);
+                return Inertia.render(inertiaRender.view(),  Inertia.Props.with(inertiaResponse.getValues()));
+            }
+            else{ return null;}
+
         }
     }
 }
