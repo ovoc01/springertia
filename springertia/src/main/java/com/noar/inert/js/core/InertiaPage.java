@@ -1,4 +1,4 @@
-package dev.noar.inertiajs.core;
+package com.noar.inert.js.core;
 
 import lombok.Builder;
 import lombok.Value;

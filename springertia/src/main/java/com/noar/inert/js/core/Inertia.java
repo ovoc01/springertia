@@ -1,4 +1,4 @@
-package dev.noar.inertiajs.core;
+package com.noar.inert.js.core;
 
 import org.springframework.web.servlet.ModelAndView;
 
@@ -7,12 +7,12 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Inertia {
     private static final String INERTIA_VIEW_NAME = "inertiaView";
-    public static ModelAndView render(String component) {
+    static ModelAndView render(String component) {
         return new ModelAndView(INERTIA_VIEW_NAME)
             .addObject("component", component);
     }
 
-    public static ModelAndView render(String component, Props props) {
+    static ModelAndView render(String component, Props props) {
         return new ModelAndView(INERTIA_VIEW_NAME)
             .addObject("component", component)
             .addObject("props", props.getContent());

@@ -1,4 +1,4 @@
-package dev.noar.inertiajs.core;
+package com.noar.inert.js.core;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -40,13 +40,13 @@ public class InertiaView extends AbstractView {
 
     @Override
     protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        final var page = InertiaPage.builder()
+        final InertiaPage page = InertiaPage.builder()
             .component((String) model.get("component"))
             .props(model.get("props"))
             .url(request.getRequestURI())
             .build();
 
-        final var jsonPage = objectMapper.writeValueAsString(page);
+        final String jsonPage = objectMapper.writeValueAsString(page);
 
         if (sentByInertia(request)) {
             writeJson(response, jsonPage);
@@ -67,21 +67,21 @@ public class InertiaView extends AbstractView {
     }
 
     private void writeHtml(HttpServletResponse response, String json) throws IOException {
-        final var inertiaTag = String.format(INERTIA_ROOT_TAG, json);
-        final var html = template.replace(INERTIA_TEMPLATE_PLACEHOLDER, inertiaTag);
+        final String inertiaTag = String.format(INERTIA_ROOT_TAG, json);
+        final String html = template.replace(INERTIA_TEMPLATE_PLACEHOLDER, inertiaTag);
         response.setContentType(MediaType.TEXT_HTML_VALUE);
         response.setContentLength(html.length());
         response.getWriter().write(html);
     }
 
     private String createTemplate(String templateLocation) {
-        final var templateFile = getApplicationContext().getResource(templateLocation);
+        final Resource templateFile = getApplicationContext().getResource(templateLocation);
 
         if (!templateFile.isReadable()) {
             throw new IllegalStateException("Missing template file: " + templateLocation);
         }
 
-        try (final var reader = getReader(templateFile)) {
+        try (final Reader reader = getReader(templateFile)) {
             return FileCopyUtils.copyToString(reader);
         } catch (Exception e) {
             throw new IllegalStateException("Could not read template file");
